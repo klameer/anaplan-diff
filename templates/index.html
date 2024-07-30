@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Upload CSV</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 50px;
+        background-color: #f5f5f5;
+        font-family: 'Courier New', Courier, monospace;
+      }
+      .container {
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+      }
+      .notebook {
+        background: #f5f5dc;
+        border: 1px solid #aaa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+      .table {
+        margin-top: 20px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      footer {
+        margin-top: 40px;
+        padding: 10px 0;
+        background-color: #f8f9fa;
+        text-align: center;
+        border-top: 1px solid #e5e5e5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Compare Anaplan Models</h1>
+      <p>Export line item lists from the models you want to compare.</p>
+      <p> Modules > Line Items (tab) > Export</p>
+      <form method="post" action="" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fileInput1">Choose first CSV file</label>
+          <input type="file" class="form-control-file" id="fileInput1" name="file1">
+        </div>
+        <div class="form-group">
+          <label for="fileInput2">Choose second CSV file</label>
+          <input type="file" class="form-control-file" id="fileInput2" name="file2">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+      </form>
+      <div class="notebook">
+        <div>{{ s|safe }}</div>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; https://lameer.co.uk</p>
+    </footer>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
