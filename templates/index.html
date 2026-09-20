@@ -2,75 +2,79 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Upload CSV</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>anaplan-diff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-      body {
-        padding-top: 50px;
-        background-color: #f5f5f5;
-        font-family: 'Courier New', Courier, monospace;
+      :root {
+        --background: #fcfcfc; --card: #ffffff; --muted: #eceeed; --border: #e6e8e7;
+        --foreground: #1a1a1a; --muted-foreground: #5f6b66;
+        --accent: #047857; --accent-2: #dc2626; --caution: #b45309;
+        --tint-verify: #ecfdf5; --tint-prove: #fef2f2; --tint-caution: #fffbeb;
+        --radius: 6px;
+        --sans: 'Geist', 'Geist Sans', system-ui, sans-serif;
+        --mono: 'Geist Mono', Consolas, monospace;
       }
-      .container {
-        max-width: 800px;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
-      }
-      .notebook {
-        background: #f5f5dc;
-        border: 1px solid #aaa;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-      }
-      .table {
-        margin-top: 20px;
-      }
-      h1 {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      footer {
-        margin-top: 40px;
-        padding: 10px 0;
-        background-color: #f8f9fa;
-        text-align: center;
-        border-top: 1px solid #e5e5e5;
-      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 64px; }
+      .kicker { font-family: var(--mono); text-transform: uppercase; letter-spacing: .18em; font-size: 12px; color: var(--muted-foreground); margin: 0 0 12px; }
+      h1 { font-weight: 500; font-size: 30px; letter-spacing: -.01em; margin: 0 0 6px; }
+      .lede { color: var(--muted-foreground); margin: 0 0 28px; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      label { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 8px; }
+      input[type=file] { width: 100%; font-family: var(--mono); font-size: 13px; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background); }
+      button { margin-top: 18px; width: 100%; background: var(--accent); color: #fff; border: 0; border-radius: var(--radius); padding: 12px; font: inherit; font-weight: 500; cursor: pointer; }
+      button:hover { opacity: .92; }
+      .hint { font-family: var(--mono); font-size: 12px; color: var(--muted-foreground); margin-top: 12px; }
+      .out { margin-top: 32px; }
+      .section { border-top: 1px solid var(--border); padding: 20px 0; }
+      .section .kicker { margin-bottom: 14px; }
+      .group { margin: 0 0 18px; }
+      .group-title { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-foreground); margin: 0 0 8px; }
+      .line { font-family: var(--mono); font-size: 13px; padding: 8px 12px; border-left: 2px solid var(--border); background: var(--muted); border-radius: 0 var(--radius) var(--radius) 0; margin: 0 0 6px; white-space: pre-wrap; word-break: break-word; }
+      .line.add { border-left-color: var(--accent); background: var(--tint-verify); }
+      .line.del { border-left-color: var(--accent-2); background: var(--tint-prove); }
+      .line.chg { border-left-color: var(--caution); background: var(--tint-caution); }
+      .line .k { color: var(--muted-foreground); }
+      .line .from { color: var(--accent-2); }
+      .line .to { color: var(--accent); }
+      .none { font-family: var(--mono); font-size: 13px; color: var(--muted-foreground); }
+      .summary { display: flex; gap: 24px; font-family: var(--mono); font-size: 13px; margin-bottom: 8px; }
+      .summary b { font-weight: 500; }
+      .summary .add { color: var(--accent); } .summary .del { color: var(--accent-2); } .summary .chg { color: var(--caution); }
+      footer { margin-top: 48px; border-top: 1px solid var(--border); padding-top: 16px; font-family: var(--mono); font-size: 12px; color: var(--muted-foreground); }
+      footer a { color: var(--accent); text-decoration: none; }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Compare Anaplan Models</h1>
-      <p>Export line item lists from the models you want to compare.</p>
-      <p> Modules > Line Items (tab) > Export</p>
-      <form method="post" action="" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="fileInput1">Choose first CSV file</label>
-          <input type="file" class="form-control-file" id="fileInput1" name="file1">
+    <div class="wrap">
+      <p class="kicker">CodelessOps · Anaplan tooling</p>
+      <h1>anaplan-diff</h1>
+      <p class="lede">See exactly what changed between two Anaplan models.</p>
+
+      <form class="card" method="post" action="" enctype="multipart/form-data">
+        <div class="row">
+          <div>
+            <label for="fileInput1">01 · Before</label>
+            <input type="file" id="fileInput1" name="file1" accept=".csv">
+          </div>
+          <div>
+            <label for="fileInput2">02 · After</label>
+            <input type="file" id="fileInput2" name="file2" accept=".csv">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="fileInput2">Choose second CSV file</label>
-          <input type="file" class="form-control-file" id="fileInput2" name="file2">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+        <button type="submit">Compare</button>
+        <p class="hint">Export each model from Modules › Line Items › Export. Runs locally, nothing is uploaded.</p>
       </form>
-      <div class="notebook">
-        <div>{{ s|safe }}</div>
-      </div>
+
+      {% if s %}
+      <div class="out">{{ s|safe }}</div>
+      {% endif %}
+
+      <footer>Built by <a href="https://codelessops.com">Karim Lameer · CodelessOps</a></footer>
     </div>
-    <footer>
-      <p>&copy; https://lameer.co.uk</p>
-    </footer>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </body>
 </html>

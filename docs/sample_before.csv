@@ -1,0 +1,11 @@
+,Module Name,Formula,Format
+Gross Revenue,REV01 Revenue Calc,,Number
+Discounts,REV01 Revenue Calc,,Number
+Net Revenue,REV01 Revenue Calc,'Gross Revenue' - Discounts,Number
+Salaries,COST01 Opex,,Number
+Bonus,COST01 Opex,,Number
+Total Cost,COST01 Opex,Salaries + Bonus,Number
+Operating Profit,PL01 Profit and Loss,'REV01 Revenue Calc'.'Net Revenue' - 'COST01 Opex'.'Total Cost',Number
+Margin %,PL01 Profit and Loss,'Operating Profit' / 'REV01 Revenue Calc'.'Net Revenue',Number
+Headcount,OLD Headcount,,Number
+Cost per Head,OLD Headcount,'COST01 Opex'.'Total Cost' / Headcount,Number
